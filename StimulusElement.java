@@ -420,8 +420,9 @@ public class StimulusElement {
 	public void setActive(String name, boolean b, float durationPoint) {
 		if (b && !disabled) wasActive = true;
 		this.durationPoint = durationPoint;
-		isA = (a == null) ? false : (a.getHasBeenActive());
-		isB = (this.b == null) ? false : (this.b.getHasBeenActive());
+		if (!isA) isA = (a == null) ? false : (a.getHasBeenActive());
+		if (!isB) isB = (this.b == null) ? false : (this.b.getHasBeenActive());
+		
 		setParams();
 	}
 	
