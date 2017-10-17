@@ -126,7 +126,7 @@ public class StimulusElement {
 	private float asy;
 	private float commonDiscount;
 	private double decay;
-	private float ctxratio;
+	private float ctxratio = 1;
 	private float durationPoint;
 	private float microIndex;
 	private float denominator;
@@ -430,8 +430,9 @@ public class StimulusElement {
 	microIndex = microPlus;//microIndexes2.put(name,microPlus);
 	//denominators2.put(name,(float)( 2f*Math.pow((isUS ? Math.sqrt((microPlus+ adj)*USCV*ctxratio) : Math.sqrt((microPlus+ adj)*std*ctxratio)), 2f)));
 	denominator = (float)( 2f*Math.pow((isUS ? Math.sqrt((microPlus+ adj)*USCV*ctxratio) : Math.sqrt((microPlus+ adj)*std*ctxratio)), 2f));
-	ctxratio =isContext ? trialLength/parent.getList().length*(10f/10f) : 1f;
-	ratio = isContext ? trialLength/parent.getList().length*(10f/10f) : 1f;}
+	//if (denominator == 0) {denominator = 1;}
+	ctxratio =isContext ? (trialLength/(parent.getList().length + 0f))*(10f/10f) : 1f;
+	ratio = isContext ? (trialLength/(parent.getList().length + 0f))*(10f/10f) : 1f;}
 
 	public void setRAlpha(float alpha) {
 		this.alphaR = alpha;
@@ -621,6 +622,7 @@ public class StimulusElement {
 		if (phase == 0 && combination == 1 &&  microstimulusIndex == 0 && getName().contains("AC") && timepoint == 3 && other.isUS) {
 			//System.out.println("AC " + subelementNumber + " " + commonDiscount + " " + generalActivation + " " + curSal +"  " + eligi + " " + currentVariableSalience + " " + nE);
 		}
+		
 		//float otherDiscount = 1f;//other.isCommon() ? group.getCommon() : other.parent.getCommonMap().size() > 0 ? 1f - group.getCommon() : 1f;
 		tempDelta = (1f/((float)subelementNumber*parent.getList().length))*commonDiscount*generalActivation*other.getAlpha()*curSal*other.getGeneralActivation()*eligi*selfDereferencer*currentVariableSalience*nE*nE2;
 		tempDelta *= isUS ? usSalience*intensity : 1f;
@@ -689,6 +691,9 @@ public class StimulusElement {
 		if (isUS) {if (difference < 0) {difference = 0;}}
 		numerator = (float) Math.pow(difference,2);
 		newValue = presence > 0 ? (float) Math.exp(-(numerator)/denominator) : 0;
+		if (Double.isNaN(numerator) || Double.isInfinite(numerator)|| Double.isNaN(denominator) || Double.isInfinite(denominator)||Double.isNaN(newValue) ) {
+			//while (true) {System.out.println(denominator +" " + numerator +" " + difference +" " + cscLikeness +" " + time +" " + ratio +" " + timepoint +" " + getName());}
+		}
 		if (isContext) {newValue*=presence;}
 		maxActivation = Math.max(maxActivation, newValue);
 		if (name.equals(getName())){activation = newValue*intensity;}
@@ -762,6 +767,7 @@ public class StimulusElement {
     		} else {actDiscount = 1f;}*/
     		//float act = ((!maximum) ? (current ? (subelementActivations[i] < 1 ? assoc : 1f) :  (lastsubelementActivations[i] < 1 ? lastAssoc : 1f)) : 1f);
     		totalPrediction += subelementWeights[i][stimulus][element]*(directActivation > 0.1 ?  1f : generalActivation*vartheta);
+    		
     	}
     	if (names.indexOf(getName())==(stimulus)) {
     		//totalPrediction*= selfDiscount;

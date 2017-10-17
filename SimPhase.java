@@ -459,7 +459,7 @@ public class SimPhase {
 					names = s.getName().toCharArray();
 					css = new CS[names.length];
 					onset = -1;
-					offset = 100;
+					offset = trialLength;
 					counter = 0;
 					for (char character : names) {
 						if (character == "c".charAt(0)) {}
@@ -489,6 +489,7 @@ public class SimPhase {
 					generalOnsetMap.put(s.getName(), generalOnset);
 					generalOffsetMap.put(s.getName(), generalOffset);
 					
+					//System.out.println(s.getName() + " " + onset +"  " + offset +" " + tempOnset +"  " + tempOffset + " " + trialLength  + " " + iti);
 			}
 			for (Stimulus s : group.getCuesMap().values()) {
 				if (s.getName().contains("c")) {
@@ -496,6 +497,7 @@ public class SimPhase {
 					String name2 = s.getName().charAt(2)+"";
 					onset = Math.max(0, Math.min(onsetMap.get(name1),onsetMap.get(name2)));
 					offset = Math.max(offsetMap.get(name1), offsetMap.get(name2));
+					
 					onsetMap.put(s.getName(),onset);
 					offsetMap.put(s.getName(),offset);
 					
@@ -546,9 +548,9 @@ public class SimPhase {
 					} else if (contextCfg.getContext().toString()
 							.equals(csName)) {
 						stimulus.setDuration(trialLength + iti, 0, trialLength
-								+ iti, j+1, true,j);
+								+ iti-1, j, true,j);
 						generalOnset = 0;
-						generalOffset = trialLength + iti;
+						generalOffset = trialLength + iti-1;
 						
 						
 					} else if(!stimulus.isContext) {
@@ -561,9 +563,9 @@ public class SimPhase {
 					else if (!contextCfg.getContext().toString()
 							.equals(csName) && stimulus.isContext) {
 						stimulus.setDuration(trialLength + iti, 0, trialLength
-								+ iti, j, false,j);
+								+ iti-1, j, false,j);
 						generalOnset = 0;
-						generalOffset = trialLength + iti;
+						generalOffset = trialLength + iti-1;
 					}
 					
 					if (!probeTiming.get(curNameSt).containsKey(
@@ -587,10 +589,12 @@ public class SimPhase {
 							currentUS = group.getCuesMap().get(naming);
 							tempPrediction = 0f;
 							div = group.getCuesMap().get(naming).getList().length;
+							
+							
 							for (int k2 = 0; k2 < currentUS.getList().length; k2++) {
 								tempPrediction += Math.abs(( (currentUS.get(k2).getAsymptote()) - elementPredictions[usIndexes.get(naming)][k2])/(div));
-
-								}
+								
+							}
 
 							if (Math.abs(tempPrediction) > 0.05) usPredictions.put(naming, tempPrediction);
 						}
@@ -598,8 +602,11 @@ public class SimPhase {
 							currentCS = group.getCuesMap().get(naming);
 							tempPrediction = 0f;
 							div = group.getCuesMap().get(naming).getList().length;
+
 							for (int k2 = 0; k2 < currentCS.getList().length; k2++) {
 								tempPrediction += Math.abs(((currentCS.get(k2).getAsymptote()) -elementPredictions[csIndexes.get(naming)][k2])/div);
+								
+								
 							}
 							
 							if (Math.abs(tempPrediction) > 0.05) csPredictions.put(naming, tempPrediction);
@@ -2001,6 +2008,7 @@ public void averageTheWeights(boolean remap,String mapName,String otherMapName, 
 									.getMicroIndex()];
 							float error2 = (el2.getAsymptote()) - elementPredictions[count2][el2
 									.getMicroIndex()];
+							
 							el.updateElement(el2.getDirectActivation(),
 									el2.getAlpha(), el2, error1, error2,
 									cue2.getName(), group);//
