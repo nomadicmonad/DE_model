@@ -2212,6 +2212,8 @@ public void averageTheWeights(boolean remap,String mapName,String otherMapName, 
 		
 	}
 	
+	public float getIntensity() {return intensity;}
+	
 	public String getCurrentTrial() {return currentSeq.substring(1);
 	}
 	}

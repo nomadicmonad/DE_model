@@ -2590,7 +2590,7 @@ public class SimView extends JFrame {
 		con.fill = GridBagConstraints.HORIZONTAL;
 		con.gridx = 0;
 		con.gridy = 0;
-		con.weighty= 0.1;
+		con.weighty= 0.15;
 		con.weightx = 1;
 		con.gridwidth = 1;
 		con.gridheight = 1;
@@ -2599,17 +2599,17 @@ public class SimView extends JFrame {
 		valuesPanel.add(CSValuesScroll,con.clone());
 		con.gridx = 0;
 		con.gridy = 1;
-		con.weighty= 0.1;
+		con.weighty= 0.15;
 		con.weightx = 1;
 		valuesPanel.add(CSVariableScroll,con.clone());
 		con.gridx = 0;
 		con.gridy = 2;
-		con.weighty= 0.1;
+		con.weighty= 0.15;
 		con.weightx = 1;
 		valuesPanel.add(CSSalienceScroll,con.clone());
 		con.gridx = 0;
 		con.gridy = 3;
-		con.weighty= 0.02;
+		con.weighty= 0.05;
 		con.ipady = 55; 
 		con.ipadx = 120;
 		con.weightx = 1;
@@ -2618,7 +2618,7 @@ public class SimView extends JFrame {
 		//otherValuesScroll.setSize(600, 800);
 		con.gridx = 0;
 		con.gridy = 4;
-		con.weighty= 0.02;
+		con.weighty= 0.05;
 		con.weightx = 1;
 		valuesPanel.add(USSalienceScroll,con.clone());
 		con.gridx = 0;
@@ -2628,16 +2628,10 @@ public class SimView extends JFrame {
 		con.ipady = 200; 
 		con.ipadx = 120;
 		valuesPanel.add(otherValuesScroll,con.clone());
-		con.gridx = 0;
-		con.gridy = 6;
-		con.weighty= 0.05;
-		con.weightx = 1;
-		con.ipady = 20; 
-		con.ipadx = 120;
-		intensityButton = new JButton("US Intensity Factor");
-		intensityButton.setActionCommand("intensity");
-		intensityButton.setEnabled(false);
-		valuesPanel.add(intensityButton,con.clone());
+		
+		
+		//"
+		//valuesPanel.add(intensityButton,con.clone());
 		//valuesPanel.add(presenceMeanCheckList);
 		
 		variablePanel.add(varButPanel, BorderLayout.NORTH);
@@ -2727,7 +2721,7 @@ public class SimView extends JFrame {
 		dispGraphBut = new JButton(Messages.getString("SimView.graphs")); //$NON-NLS-1$
 		dispGraphBut.setActionCommand("dispGraph"); //$NON-NLS-1$
 		JPanel dispGraphButPanel = new JPanel();
-		dispGraphButPanel.setLayout(new GridLayout(22, 1));
+		dispGraphButPanel.setLayout(new GridLayout(23, 1));
 		runBut.setForeground(new Color(240,0,0));
 		//clearBut.setForeground(new Color(180,0,0));
 		//clearBut.setFont(new Font("Helvetica", Font.ITALIC, 12));
@@ -2751,6 +2745,10 @@ public class SimView extends JFrame {
 		dispGraphButPanel.add(new JLabel(""));
 		dispGraphButPanel.add(floatingButtons);
 		dispGraphButPanel.add(new JLabel(""));
+		intensityButton = new JButton("US Intensity Factor");
+		intensityButton.setActionCommand("intensity");
+		intensityButton.setEnabled(false);
+		dispGraphButPanel.add(intensityButton);
 		dispGraphButPanel.add(runBut);
 		//dispGraphButPanel.add(clearBut);
 		resultPanel.add(runButPanel, BorderLayout.EAST);
