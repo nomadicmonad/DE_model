@@ -543,7 +543,7 @@ public class SimView extends JFrame {
 										record[c] = ""; //$NON-NLS-1$
 									}
 								} else {
-									record[c] = "0.3"; //$NON-NLS-1$
+									record[c] = "0.1"; //$NON-NLS-1$
 								}
 							}
 							data1.add(record);
@@ -880,7 +880,7 @@ public class SimView extends JFrame {
 							record[c] = "0.01"; //$NON-NLS-1$
 						else if (((String) record[0]).indexOf(recency) != -1
 								&& c == 1) 
-							record[c] = "0.01"; //$NON-NLS-1$
+							record[c] = "0.1"; //$NON-NLS-1$
 						else if (((String) record[0]).indexOf(common) != -1
 								&& c == 1) 
 							record[c] = "0.1"; //$NON-NLS-1$
@@ -893,7 +893,7 @@ public class SimView extends JFrame {
 						
 						else if (((String) record[0]).indexOf(csRecency) != -1
 								&& c == 1) 
-							record[c] = "0.01";
+							record[c] = "0.1";
 						else if (((String) record[0]).indexOf(b) != -1
 								&& c == 1) 
 							record[c] = "0.75";
@@ -1435,6 +1435,7 @@ public class SimView extends JFrame {
 	private JButton setVariablesBut, clearBut, runBut, dispGraphBut,
 			addPhaseBut, removePhaseBut, addGroupBut, removeGroupBut,gButton;
 	public  JButton intensityButton;
+	public  JButton commonButton;
 	private JScrollPane phasesScroll, CSValuesScroll, USValuesScroll, DDValuesScroll,CSVariableScroll,
 			outputScroll;
 	private JTable phasesTable, CSValuesTable, CSVariableTable, USValuesTable, DDValuesTable;
@@ -1551,6 +1552,7 @@ public class SimView extends JFrame {
 		contextAlphaN = 0.2f;
 		contextSalience = 0.07f;
 		model = m;
+		model.setView(this);
 		isUSAcrossPhases = false;
 		isSetCompound = true;
 		isSetConfiguralCompounds = false;
@@ -1582,6 +1584,7 @@ public class SimView extends JFrame {
 		runBut.addActionListener(event);
 		dispGraphBut.addActionListener(event);
 		intensityButton.addActionListener(event);
+		commonButton.addActionListener(event);
 		waTimeCheckList.addActionListener(event);
 		waTrialCheckList.addActionListener(event);
 		vGraphCheckList.addActionListener(event);
@@ -2721,7 +2724,7 @@ public class SimView extends JFrame {
 		dispGraphBut = new JButton(Messages.getString("SimView.graphs")); //$NON-NLS-1$
 		dispGraphBut.setActionCommand("dispGraph"); //$NON-NLS-1$
 		JPanel dispGraphButPanel = new JPanel();
-		dispGraphButPanel.setLayout(new GridLayout(23, 1));
+		dispGraphButPanel.setLayout(new GridLayout(24, 1));
 		runBut.setForeground(new Color(240,0,0));
 		//clearBut.setForeground(new Color(180,0,0));
 		//clearBut.setFont(new Font("Helvetica", Font.ITALIC, 12));
@@ -2745,6 +2748,10 @@ public class SimView extends JFrame {
 		dispGraphButPanel.add(new JLabel(""));
 		dispGraphButPanel.add(floatingButtons);
 		dispGraphButPanel.add(new JLabel(""));
+		commonButton = new JButton("Pairwise common elements");
+		commonButton.setActionCommand("commonMap");
+		commonButton.setEnabled(false);
+		dispGraphButPanel.add(commonButton);
 		intensityButton = new JButton("US Intensity Factor");
 		intensityButton.setActionCommand("intensity");
 		intensityButton.setEnabled(false);
@@ -3668,6 +3675,8 @@ public class SimView extends JFrame {
 			dispGraphBut.setEnabled(mode);
 		if (b.equals(intensityButton.getActionCommand()))
 			intensityButton.setEnabled(mode);
+		if (b.equals(commonButton.getActionCommand()))
+			commonButton.setEnabled(mode);
 		if (b.equals(timePredictionCheckList.getActionCommand()))
 			timePredictionCheckList.setEnabled(mode);
 		if (b.equals(presenceMeanCheckList.getActionCommand()))
@@ -3760,6 +3769,7 @@ public class SimView extends JFrame {
 		dispGraphBut.setEnabled(!lock);
 
 		intensityButton.setEnabled(!lock);
+		commonButton.setEnabled(!lock);
 		addPhaseBut.setEnabled(!lock);
 		removePhaseBut.setEnabled(!lock);
 		gButton.setEnabled(!lock);
@@ -3880,6 +3890,7 @@ public class SimView extends JFrame {
 
 	public void updateModel(SimModel m) {
 		model = m;
+		model.setView(this);
 	}
 	
 	public boolean isUseCompound() {return isSetCompound();}
