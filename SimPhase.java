@@ -743,7 +743,8 @@ public class SimPhase {
 									rightTime = false;
 									if(shouldUpdateUS || true ||usIndexes.size() == 0 || (stim.isContext&& rightTime)) {
 										totalErrorUS = el.getTotalError(Math.abs(averageError));
-										tempDopamine = tempDopamine*(1-integration*act)*(1-(totalErrorUS>threshold ? totalErrorUS/100f : 0)) + (integration*act* Math.max(0, (Math.min(1, Math.abs(averageError))))*(Math.max(el.getParent().getWasActive(),el.getGeneralActivation())));
+										if (el.getName().equals("B") && this.phaseNum == 1) {System.out.println(j + " " + act + totalErrorUS);}
+										tempDopamine = tempDopamine*(1-integration*act)*(1-act*(totalErrorUS>threshold ? totalErrorUS/100f : 0)) + (integration*act* Math.max(0, (Math.min(1, Math.abs(averageError))))*(Math.max(el.getParent().getWasActive(),el.getGeneralActivation())));
 										//if (el.getName().contains("AX") || el.getName().contains("BY") && j == 3) {System.out.println(el.getName()+ " " + totalErrorUS + " "+ act + " " + averageError);}
 									}
 									if(shouldUpdateCS || true || csIndexes.size() == 0) {
